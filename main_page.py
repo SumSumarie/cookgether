@@ -1,10 +1,10 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from community import community_page
-from recipe_generator import recipe_generator_page
-from cost_calculator import cost_calculator_page
-from food_share import food_share_page
-from about import about_page
+from src.community import community_page
+from src.recipe_generator import recipe_generator_page
+from src.cost_calculator import cost_calculator_page
+from src.food_share import food_share_page
+from src.about import about_page
 
 
 
