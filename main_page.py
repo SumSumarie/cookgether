@@ -4,7 +4,13 @@ from src.community import community_page
 from src.recipe_generator import recipe_generator_page
 from src.cost_calculator import cost_calculator_page
 from src.food_share import food_share_page
+from src.login import login_page
 from src.about import about_page
+
+# REMOVE THIS CODE
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+###
 
 
 
@@ -17,7 +23,13 @@ st.set_page_config(
 
 # 1. as sidebar menu
 with st.sidebar:
-    choice = option_menu("Cookgether", ["🥘  Community", "🗒️  AI Recipe Generator", "🧾  Cost Calculator","🍎  Food Share", "📌  About"],
+    choice = option_menu("Cookgether",
+                         ["🥘  Community",
+                          "🗒️  AI Recipe Generator",
+                          "🧾  Cost Calculator",
+                          "🍎  Food Share",
+                          "😀  Profile",
+                          "📌  About"],
                          # create a menu bar
                             menu_icon="house", default_index=1)
 
@@ -30,6 +42,7 @@ if choice =="🥘  Community":
 
 #the page AI Recipe Generator
 elif choice =="🗒️  AI Recipe Generator":
+    #login_page()
     recipe_generator_page()
 
 #the page Cost Calculator
@@ -39,6 +52,10 @@ elif choice =="🧾  Cost Calculator":
 #the page Food Share
 elif choice =="🍎  Food Share":
     food_share_page()
+
+#the page Food Share
+elif choice =="😀  Profile":
+    login_page()
 
 
 #the page About

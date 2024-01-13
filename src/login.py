@@ -1,14 +1,17 @@
 import streamlit as st
-from user_profile import user_profile_page
-from data_help import connect_to_data, fetch_data
+from src.user_profile import user_profile_page
+
+# REMOVE THIS CODE
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+###
+
 
 def login_page():
     #create a placeholder variable
     placeholder=st.empty()
     credentials_check=False
 
-    # create database in deta
-    db = connect_to_data(db_name="profile")
 
     with placeholder.form("Login"):
         st.title("Login")
@@ -27,29 +30,11 @@ def login_page():
             elif len(password) == 0:
                 st.warning('Please enter password', icon="⚠️")
             # only if user enters username and password do we get to this stage
+            elif user_name == "test" and password=="test":
+                credentials_check = True
             else:
-                # check if user name exists
-                # to validate the uniqueness of the user_name
-                # use the fetch function to fetch and
-                user_data = fetch_data(db)
-                user_names = list(user_data.user_name)
+                st.error("Incorrect user/password combination")
 
-                # if user name is found then check the password
-                if user_name in user_names:
-                    # check password
-                    registered_password = list(user_data[user_data["user_name"] == user_name]["password"])[0]
-
-                    if registered_password == password:
-                        check_credentials = True
-                    else:
-                        st.error('Please enter the CORRECT password', icon="⚠️")
-                # else insert the user - however, could also add a user name validation step
-                else:
-                    # to insert the data - use the insert function and pass in a dictionary
-                    db.insert({"user_name": user_name,
-                               "password": password})
-                    check_credentials = True
-
-    if credentials_check==True:
+    if credentials_check:
         placeholder.empty()
         user_profile_page()
