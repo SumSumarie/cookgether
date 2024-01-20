@@ -1,6 +1,8 @@
 import streamlit as st
 from datetime import datetime
 from openai import OpenAI
+from src.user_profile import user1
+
 
 client = OpenAI(api_key=st.secrets['open_api_key'])
 def recipe_generator_page():
@@ -93,14 +95,26 @@ def recipe_generator_page():
     # handling the user input
     if st.button('Generate Recipe'):
         # Generating a prompt based on the ingredients while preserving original input
-        recipe_prompt = f"Generate one recipe based on all the requirements below (ONLY ONE! But make it detailed. Always start with a ingredients part and then a detailed step by step guide! These are my prerequisites: " \
-                        f"My ingredients, please include as many as possible: {ingredients} {additional_ingredients}. " \
-                        f"My dietary preferences are: {dietary_preferences_str}." \
-                        f"My favourite cuisine: {cuisine}. " \
-                        f"This timeframe I have for cooking: {cookingtime} minutes. " \
-                        f"The number of people I am cooking for {numberofpeople}. " \
-                        f"The Cooking Level i am currently am: {cookinglevel}. " \
-                        f"Make sure that the recipe is possible with just the following cooking appliances: {cookingappliances}. "
+        recipe_prompt = (
+            f"Please generate one (only do one recipe, not multiple suggestions - only one recipe but with detailed instructions) detailed recipe with step-by-step instructions that meets all of the following requirements:"
+            f"\n\nIngredients:"
+            f"\n- Include as many as possible of: {ingredients} {additional_ingredients}"
+            f"\n\nDietary Preferences: "
+            f"\n- {dietary_preferences_str}" 
+            f"\n\nCuisine Preference:"
+            f"\n- {cuisine} "
+            f"\n\nTimeframe: "
+            f"\n- The recipe should take around {cookingtime} minutes from start to finish."
+            f"\n\nServing Size:" 
+            f"\n- The recipe should serve {numberofpeople} people."
+            f"\n\nCooking Level:"
+            f"\n- The recipe should be appropriate for someone at a {cookinglevel} cooking level."
+            f"\n\nCooking Appliances:"
+            f"\n- Only use the following appliances: {cookingappliances}"
+            f"\n\nFormat:"
+            f"\n- Start with a detailed ingredients list"
+            f"\n- Then provide step-by-step instructions for preparing the recipe"
+        )
         with st.expander("Show the prompt used for this recipe:"):
             st.write('This is the current prompt', recipe_prompt)
         response = client.chat.completions.create(model="gpt-3.5-turbo",
@@ -122,5 +136,31 @@ def recipe_generator_page():
             file_name=filename
         )
 
+        input_summary = (
+            f"**Selected Ingredients:** {', '.join(ingredients)}   \n"
+            f"**Additional Ingredients:** {additional_ingredients}   \n"
+            f"**Preferred Cuisine:** {cuisine}   \n"
+            f"**Available Cooking Appliances:** {', '.join(cookingappliances)}   \n"
+            f"**Number of People:** {numberofpeople}   \n"
+            f"**Cooking Time:** {cookingtime}   \n"
+            f"**Cooking Level:** {cookinglevel}   \n"
+            f"**Dietary Preferences:** {dietary_preferences_str}   \n"
+        )
 
+        new_recipe = {
+            "date": today,
+            "ingredients": ingredients,
+            "instructions": recipe_output,
+            "prompt": input_summary
+        }
 
+        user1["recipes"].append(new_recipe)
+
+    # update preferences to user profile
+    newpreferences = {
+        "cookinglevel": cookinglevel,
+        "favouritecuisine": cuisine,
+        "dietarypreferences": dietary_preferences_str
+    }
+
+    user1.update(newpreferences)

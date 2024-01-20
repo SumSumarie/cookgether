@@ -5,6 +5,7 @@ from src.recipe_generator import recipe_generator_page
 from src.cost_calculator import cost_calculator_page
 from src.food_share import food_share_page
 from src.login import login_page
+from src.user_profile import user_profile_page
 from src.about import about_page
 
 # REMOVE THIS CODE
@@ -31,7 +32,7 @@ with st.sidebar:
                           "😀  Profile",
                           "📌  About"],
                          # create a menu bar
-                            menu_icon="house", default_index=1)
+                            menu_icon="house", default_index=0)
 
 
 #if else statement to go to different pages
@@ -55,7 +56,7 @@ elif choice =="🍎  Food Share":
 
 #the page Food Share
 elif choice =="😀  Profile":
-    login_page()
+    user_profile_page()
 
 
 #the page About
