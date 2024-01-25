@@ -1,17 +1,20 @@
 import streamlit as st
-from src.user_profile import user_profile_page
+from main_page import main_page
 
 # REMOVE THIS CODE
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 ###
 
-
 def login_page():
+    #code to config the page
+    st.set_page_config(
+        page_title="Cookgether",
+        page_icon="🥘"
+    )
     #create a placeholder variable
     placeholder=st.empty()
     credentials_check=False
-
 
     with placeholder.form("Login"):
         st.title("Login")
@@ -37,4 +40,7 @@ def login_page():
 
     if credentials_check:
         placeholder.empty()
-        user_profile_page()
+        main_page()
+
+#
+login_page()

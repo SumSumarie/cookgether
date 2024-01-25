@@ -13,15 +13,15 @@ user1 = {
     "location": "Berlin",
     "recipes":[
             {
-                "date": "Spaghetti Carbonara",
+                "date": "01_29_2023 13:15",
                 "ingredients": ["Spaghetti", "Eggs", "Bacon"],
                 "prompt": "example prompt",
                 "instructions": "Cook spaghetti. Mix eggs and bacon. Combine with spaghetti."
             },
             {
-                "date": "Tomato Soup",
+                "date": "01_31_2023 13:15",
                 "ingredients": ["Tomatoes", "Onion", "Garlic"],
-"prompt":       "example prompt",
+                "prompt":       "example prompt",
                 "instructions": "Blend tomatoes and cook with onion and garlic."
             }
         ]
@@ -49,14 +49,14 @@ def user_profile_page():
 
     # cooking preferences section
     st.subheader('Cooking Info and Preferences', divider='rainbow')
-    st.markdown(f"**My Cooking Level: :green[{user_profiles['Mr.Crabs']['cookinglevel']}]**")
-    st.markdown(f"**My Favourite Cuisine: :green[{user_profiles['Mr.Crabs']['favouritecuisine']}]**")
-    st.markdown(f"**My Diet: :green[{user_profiles['Mr.Crabs']['dietarypreferences']}]**")
+    st.markdown(f"*My Cooking Level: :green[{user_profiles['Mr.Crabs']['cookinglevel']}]*")
+    st.markdown(f"*My Favourite Cuisine: :green[{user_profiles['Mr.Crabs']['favouritecuisine']}]*")
+    st.markdown(f"*My Diet: :green[{user_profiles['Mr.Crabs']['dietarypreferences']}]*")
 
     # generated recipes
     st.subheader('History of recipes:', divider='rainbow')
     for recipe in user1["recipes"]:
         with st.expander("Show the input used for this recipe:"):
-            st.write('This is the current prompt', recipe['prompt'])
-        st.markdown(f"**Cooked on the:** {recipe['date']}  \n **Instructions:** {recipe['instructions']}")
+            st.write(recipe['prompt'])
+        st.markdown(f"*Cooked on the:* {recipe['date']}  \n *Instructions:* {recipe['instructions']}")
         st.markdown("---")
