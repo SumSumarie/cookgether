@@ -1,5 +1,5 @@
 import streamlit as st
-from main_page import  main_page
+from src.main_page import  main_page
 from src.helper import connect_to_deta, fetch_data
 
 

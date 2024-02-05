@@ -2,7 +2,6 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from src.community_new import community_upload
 from src.recipe_generator import recipe_generator_page
-from src.cost_calculator import cost_calculator_page
 from src.food_share import food_share_page
 from src.user_profile import user_profile_page
 from src.about import about_page
@@ -35,7 +34,6 @@ def main_page():
         choice = option_menu("Cookgether",
                              ["🥘  Community",
                               "🗒️  AI Recipe Generator",
-                              "🧾  Cost Calculator",
                               "🍎  Food Share",
                               "😀  Profile",
                               "📌  About"],
@@ -53,10 +51,6 @@ def main_page():
     elif choice =="🗒️  AI Recipe Generator":
         #login_page()
         recipe_generator_page()
-
-    #the page Cost Calculator
-    elif choice =="🧾  Cost Calculator":
-        cost_calculator_page()
 
     #the page Food Share
     elif choice =="🍎  Food Share":
