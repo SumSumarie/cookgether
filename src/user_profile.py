@@ -1,8 +1,8 @@
 import streamlit as st
-from src.data_help import connect_to_data, fetch_data
+from src.helper import connect_to_deta, fetch_data
 
 # create database in deta
-db = connect_to_data("profile")
+db = connect_to_deta("profile")
 user1 = {
     "username": "Mr.Crabs",
     "email": "mrcrabs@email.com",
@@ -11,20 +11,7 @@ user1 = {
     "favouritecuisine": "Not yet selected.",
     "dietarypreferences": "Not yet selected.",
     "location": "Berlin",
-    "recipes":[
-            {
-                "date": "01_29_2023 13:15",
-                "ingredients": ["Spaghetti", "Eggs", "Bacon"],
-                "prompt": "example prompt",
-                "instructions": "Cook spaghetti. Mix eggs and bacon. Combine with spaghetti."
-            },
-            {
-                "date": "01_31_2023 13:15",
-                "ingredients": ["Tomatoes", "Onion", "Garlic"],
-                "prompt":       "example prompt",
-                "instructions": "Blend tomatoes and cook with onion and garlic."
-            }
-        ]
+    "recipes":[]
 }
 
 user2 = {
@@ -58,5 +45,5 @@ def user_profile_page():
     for recipe in user1["recipes"]:
         with st.expander("Show the input used for this recipe:"):
             st.write(recipe['prompt'])
-        st.markdown(f"*Cooked on the:* {recipe['date']}  \n *Instructions:* {recipe['instructions']}")
+        st.markdown(f"*Name:* {recipe['name']}   \n *Cooked on the:* {recipe['date']}  \n *Instructions:* {recipe['instructions']}")
         st.markdown("---")

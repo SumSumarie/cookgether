@@ -1,6 +1,6 @@
 import streamlit as st
-from src.community_recipe import community_recipe
-from src.community_upload import community_upload
+#from src.community_recipe import community_recipe
+from src.community_new import community_upload
 
 #a list of the food names as captions
 recipe_name = ['Potato',

@@ -96,7 +96,7 @@ def recipe_generator_page():
     if st.button('Generate Recipe'):
         # Generating a prompt based on the ingredients while preserving original input
         recipe_prompt = (
-            f"Please generate one (only do one recipe, not multiple suggestions - only one recipe but with detailed instructions) detailed recipe with step-by-step instructions that meets all of the following requirements:"
+            f"Please generate one detailed recipe with step-by-step instructions that meets all of the following requirements:"
             f"\n\nIngredients:"
             f"\n- Include as many as possible of: {ingredients} {additional_ingredients}"
             f"\n\nDietary Preferences: "
@@ -118,15 +118,19 @@ def recipe_generator_page():
         with st.expander("Show the prompt used for this recipe:"):
             st.write('This is the current prompt', recipe_prompt)
         response = client.chat.completions.create(model="gpt-3.5-turbo",
-        messages=[{"role": "system", "content": f"{ingredients}"}])
+        messages=[{"role": "system", "content": f"{recipe_prompt}"}])
         # recipe_output = response['choices'][0]['message']['content']
         recipe_output = response.choices[0].message.content
 
+        name = client.chat.completions.create(model="gpt-3.5-turbo",
+                                                  messages=[{"role": "system", "content": f"Generate a short name for the following recipe with an Emoji attached, consider that it is a {cuisine} recipe for your title. The recipe: {recipe_output}"}])
+        name_output = name.choices[0].message.content
+
         # display recipe output
-        st.info(recipe_output)
+        st.info(f"*Name:*   \n{name_output}   \n   \n{recipe_output}")
 
         # generate a structured recipe with original ingredients and the date of generation
-        today = datetime.today().strftime('%Y-%m-%d')
+        today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         topic = f"Based on your ingredients: {ingredients} I created this recipe for you \n{recipe_output}"
         filename = f"Recipe_from_{today}.txt"
 
@@ -149,6 +153,7 @@ def recipe_generator_page():
 
         new_recipe = {
             "date": today,
+            "name": name_output,
             "ingredients": ingredients,
             "instructions": recipe_output,
             "prompt": input_summary

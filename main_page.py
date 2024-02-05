@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from src.community_new import community_page
+from src.community_new import community_upload
 from src.recipe_generator import recipe_generator_page
 from src.cost_calculator import cost_calculator_page
 from src.food_share import food_share_page
@@ -22,7 +22,7 @@ def main():
     st_lottie(st_lottie_url,height=100,width=100)
 
     # Simulate animation time (you can adjust this based on the actual animation duration)
-    time.sleep(2)  # Adjust the sleep duration based on your animation length
+    #time.sleep(1)  # Adjust the sleep duration based on your animation length
 
     # Clear the animation and show the main page
     animation_placeholder.empty()
@@ -46,7 +46,7 @@ def main_page():
     #if else statement to go to different pages
     #the page Community
     if choice =="🥘  Community":
-        community_page()
+        community_upload()
 
 
     #the page AI Recipe Generator
