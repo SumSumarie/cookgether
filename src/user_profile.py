@@ -2,7 +2,7 @@ import streamlit as st
 from src.helper import connect_to_deta, fetch_data
 
 # create database in deta
-db = connect_to_deta("profile")
+db = connect_to_deta("snake-demo")
 user1 = {
     "username": "Mr.Crabs",
     "email": "mrcrabs@email.com",
@@ -22,17 +22,34 @@ user2 = {
     "location": "Hamburg"
 }
 
+
 user_profiles = {
     "Mr.Crabs": user1,
     "Spongebob": user2
 }
 
 def user_profile_page():
+    user_data = fetch_data(db)
     st.title("Profile")
+
+    if 'current_username' in st.session_state:
+        current_user = st.session_state['current_username']
+        st.write("Current username:", current_user)
+        about_me_current_user = user_data.loc[user_data['user_name'] == current_user]["aboutme"]
+        print(about_me_current_user)
+        key = user_data.loc[user_data['user_name'] == current_user]["key"].to_string(index=False)
+        print(key)
+        db.update({"aboutme": "testtest"}, key)
+        about_me_current_user = user_data.loc[user_data['user_name'] == current_user]["aboutme"]
+        print(about_me_current_user)
+    else:
+        st.write("No current username in session state.")
 
     # about me section
     st.subheader('About Me', divider='rainbow')
-    st.markdown(user_profiles["Mr.Crabs"]["aboutme"])
+
+
+    st.markdown(about_me_current_user.to_string(index=False))
 
     # cooking preferences section
     st.subheader('Cooking Info and Preferences', divider='rainbow')

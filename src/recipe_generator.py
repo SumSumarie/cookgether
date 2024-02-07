@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import datetime
 from openai import OpenAI
 from src.user_profile import user1
+from src.animation import cooking_animation
 
 
 client = OpenAI(api_key=st.secrets['open_api_key'])
@@ -94,6 +95,7 @@ def recipe_generator_page():
 
     # handling the user input
     if st.button('Generate Recipe'):
+
         # Generating a prompt based on the ingredients while preserving original input
         recipe_prompt = (
             f"Please generate one detailed recipe with step-by-step instructions that meets all of the following requirements:"
@@ -117,6 +119,9 @@ def recipe_generator_page():
         )
         with st.expander("Show the prompt used for this recipe:"):
             st.write('This is the current prompt', recipe_prompt)
+
+        cooking_animation(100,100)
+
         response = client.chat.completions.create(model="gpt-3.5-turbo",
         messages=[{"role": "system", "content": f"{recipe_prompt}"}])
         # recipe_output = response['choices'][0]['message']['content']
@@ -125,10 +130,8 @@ def recipe_generator_page():
         name = client.chat.completions.create(model="gpt-3.5-turbo",
                                                   messages=[{"role": "system", "content": f"Generate a short name for the following recipe with an Emoji attached, consider that it is a {cuisine} recipe for your title. The recipe: {recipe_output}"}])
         name_output = name.choices[0].message.content
-
         # display recipe output
         st.info(f"*Name:*   \n{name_output}   \n   \n{recipe_output}")
-
         # generate a structured recipe with original ingredients and the date of generation
         today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         topic = f"Based on your ingredients: {ingredients} I created this recipe for you \n{recipe_output}"

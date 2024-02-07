@@ -1,8 +1,8 @@
+"""This is the login page"""
 import streamlit as st
 from src.main_page import  main_page
 from src.helper import connect_to_deta, fetch_data
-
-
+from src.animation import cooking_animation
 
 # set the page config info
 st.set_page_config(
@@ -10,6 +10,7 @@ st.set_page_config(
     page_icon="🥘",
     layout="wide"
 )
+
 
 # create a placeholder variable, so I can delete the form widget after using it
 placeholder = st.empty()
@@ -43,6 +44,7 @@ db = connect_to_deta(base_name)
 # create the log in form - this only gets created in the snake game has not been activated
 if st.session_state.cookgether_count < 1:
     with placeholder.form("Login"):
+        cooking_animation(200, 200)
         st.markdown(f'<p style="font-size: 20px; color:grey">Hello! Please enter your log in info.'
                     f'<br>If this is your first time on my app then please click on the Register Button.</p>',
                     unsafe_allow_html=True)
@@ -66,6 +68,7 @@ if st.session_state.cookgether_count < 1:
 
                     if password == registered_password:
                         credentials_check = True
+                        st.session_state['current_username'] = user_name
                     else:
                         st.error("The username/password is not correct")
                 else:
@@ -86,9 +89,20 @@ if st.session_state.cookgether_count < 1:
                                icon="⚠️")
                 else:
                     # write the data to the database and update the credentials check flag
-                    db.put({"user_name": user_name,
-                            "password": password})
+                    db.put({
+                        "user_name": user_name,
+                        "password": password,
+                        "email": "Not yet selected",  # This can be prompted for or set later
+                        "aboutme": "Not yet selected",
+                        "cookinglevel": "Not yet selected",
+                        "favouritecuisine": "Not yet selected",
+                        "dietarypreferences": "Not yet selected",
+                        "location": "Berlin",  # This can be dynamic or set later
+                        "recipes": []
+                    })
                     credentials_check = True
+                    st.session_state['current_username'] = user_name
+
 
     # once this flag has been updated, then we can go to the game
     if credentials_check:

@@ -5,27 +5,11 @@ from src.recipe_generator import recipe_generator_page
 from src.food_share import food_share_page
 from src.user_profile import user_profile_page
 from src.about import about_page
-from streamlit_lottie import st_lottie
-import time
 
 # REMOVE THIS CODE
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 ###
-
-def main():
-    st_lottie_url = "https://lottie.host/5e40c7d4-3253-4ac8-9a96-4a3575da91f5/V4LHvS4XDN.json"
-
-    # Show Lottie animation
-    animation_placeholder = st.empty()
-    st_lottie(st_lottie_url,height=100,width=100)
-
-    # Simulate animation time (you can adjust this based on the actual animation duration)
-    #time.sleep(1)  # Adjust the sleep duration based on your animation length
-
-    # Clear the animation and show the main page
-    animation_placeholder.empty()
-    main_page()
 
 def main_page():
 
@@ -38,7 +22,7 @@ def main_page():
                               "😀  Profile",
                               "📌  About"],
                              # create a menu bar
-                                menu_icon="house", default_index=0)
+                                menu_icon="house", default_index=1)
 
 
     #if else statement to go to different pages
